@@ -45,20 +45,15 @@ public class WebServer {
         try {
             DataOutputStream out=new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader in= new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            System.out.println(requestHeader(in));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String requestHeader(BufferedReader in){
-        String reqRes=null;
-        String clientReq=null;
-        try {
-            clientReq=in.readLine();
-            reqRes= clientReq.split(" ")[0];
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private String requestHeader(BufferedReader in) throws IOException {
+            String clientReq=in.readLine();
+
         return clientReq;
     }
 }
