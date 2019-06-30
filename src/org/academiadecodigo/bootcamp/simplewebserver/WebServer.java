@@ -1,9 +1,6 @@
 package org.academiadecodigo.bootcamp.simplewebserver;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -45,15 +42,32 @@ public class WebServer {
         try {
             DataOutputStream out=new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader in= new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            System.out.println(requestHeader(in));
+            String clientReq=requestHeader(in);
+            File file=new File("www/index.html");
+            if(clientReq.equals("index.html")){
+                out.writeBytes("HTTP/1.1 200 Document Follows\r\n" +
+                        "Content-Type: text/html; charset=UTF-8\r\n"+
+                        "Content-Length:" + file.length()+"\r\n"+"\r\n");
+                FileInputStream fileIn=new FileInputStream(file);
+                byte[] buffer= new byte[1024];
+                int numbytes;
+                while((numbytes=fileIn.read(buffer))!=-1){
+                    out.write(buffer,0,numbytes);
+                }
+                fileIn.close();
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (NullPointerException ex){
+            ex.getMessage();
         }
     }
 
     private String requestHeader(BufferedReader in) throws IOException {
             String clientReq=in.readLine();
+            String clientRes=clientReq.split(" /| ")[1];
 
-        return clientReq;
+        return clientRes;
     }
 }
