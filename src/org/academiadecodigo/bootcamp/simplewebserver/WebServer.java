@@ -22,7 +22,7 @@ public class WebServer {
         }
     }
 
-    private  void connectClient(ServerSocket server) {
+    private  void connectClient (ServerSocket server)  {
     while (true) {
         try {
             Socket clientSocket = server.accept();
@@ -72,7 +72,7 @@ public class WebServer {
     }
 
     private void headerCreator(File file, DataOutputStream out) throws IOException {
-        System.out.println("started writing the "+file);
+        System.out.println("started writing the "+file.getName());
         FileInputStream fileIn=new FileInputStream(file);
         out.writeBytes("HTTP/1.1 200 Document Follows\r\n");
         out.writeBytes(  "Content-Type: text/html; charset=UTF-8\r\n"+
